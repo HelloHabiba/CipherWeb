@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-nb%w3)i-3(zm*hzy1d&bmy3)os0yr8$(10i1@7@b%fz=j1!u&f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["ciphey.me","cipherweb.habeeba.uk"]
+ALLOWED_HOSTS = ["https://*.ciphey.me","https://*.habeeba.uk"]
 
 
 # Application definition
