@@ -142,6 +142,10 @@
 </div>
 <script>
     document.getElementById('id_file').onchange = function() {
+          if(this.files[0].size > 2097152*4){
+            alert("File is too big!");
+            this.value = "";
+        }
         document.getElementById('file-upload-form').submit();
     };
 </script>
