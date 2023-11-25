@@ -140,3 +140,8 @@ STATICFILES_DIRS = [
     BASE_DIR / "lstatic/images",
     # Add other directories as needed
 ]
+# 30mb - 31457280
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024000000  # 1 GB in bytes
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]
