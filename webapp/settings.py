@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'webapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd3pc3buojcibom',
-        'USER': 'qyuxgqkouxdtkb',
-        'PASSWORD': '5cf2767e934f4b9030863bdc19165f321e6139083c128516d6be7dbc644de730',
-        'HOST': 'ec2-34-242-199-141.eu-west-1.compute.amazonaws.com',
+        'NAME': 'd5tvb3oiji9emd',
+        'USER': 'efytcwmktqkttg',
+        'PASSWORD': '2b0c722b504a9ac8c6593039796154ac7050f5c92ad2339de1de14632ff93a63',
+        'HOST': 'ec2-3-254-215-198.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
