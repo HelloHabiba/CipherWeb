@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('spaces', '0002_file_created_at'),
+        ("spaces", "0002_file_created_at"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='space',
-            name='private_key',
+            model_name="space",
+            name="private_key",
             field=models.BinaryField(),
         ),
         migrations.AlterField(
-            model_name='space',
-            name='public_key',
+            model_name="space",
+            name="public_key",
             field=models.BinaryField(),
         ),
     ]
