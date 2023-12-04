@@ -1,2 +1,2 @@
 web: gunicorn webapp.wsgi --timeout 1000 --workers 3
-worker: celery worker --app=tasks.app
+worker: celery -A webapp worker --loglevel=info
