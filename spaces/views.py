@@ -33,10 +33,10 @@ async def home_page(request):
             raw_file = web_file.read()
             file_name = web_file.name
 
-            file_instance = File.objects.create(
-                name=file_name, space=request.user.space.first(), ended=False
+            file_instance = File(
+                name=file_name, space=request.user.space.first(), ended=False, file=None
             )
-
+            file_instance.save()
             encrypt_and_save(request.user.id, raw_file, file_instance.id)
             return redirect("home")
         else:

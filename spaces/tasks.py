@@ -12,9 +12,10 @@ def sync_encrypt_and_save(user_id, clean_file, file_id):
     key = user_space.public_key
     public_key = RSA.import_key(key)
 
-    file_instance = File.objects.get(id=file_id, space=user_space)
+    file_instance = File.objects.get(id=file_id)
     encrypted_data = encrypt(clean_file, public_key)
-    file_instance.file.save(file_instance.name, ContentFile(encrypted_data))
+    file_data = ContentFile(encrypted_data, name=file_instance.name)
+    file_instance.file = file_data
     file_instance.ended = True
     file_instance.save()
     return True
