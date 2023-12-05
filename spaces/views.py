@@ -16,9 +16,9 @@ class FileUploadForm(forms.Form):
 def get_all_files(space):
     files = File.objects.filter(space=space)
     for f in files:
-        try:
-            f.size = f.file.size
-        except:
+        if f.data:
+            f.size = len(f.data)
+        else:
             f.size = 0
     return files
 
@@ -32,11 +32,7 @@ async def home_page(request):
             web_file = request.FILES["file"]
             raw_file = web_file.read()
             file_name = web_file.name
-
-            file_instance = File(
-                name=file_name, space=request.user.space.first(), ended=False, file=None
-            )
-            file_instance.save()
+            file_instance = File.objects.create(space=space, name=file_name, end=False)
             encrypt_and_save(request.user.id, raw_file, file_instance.id)
             return redirect("home")
         else:
@@ -83,7 +79,7 @@ def download_file(request, file_id):
     file = File.objects.get(space=space, id=file_id)
     response = HttpResponse(content_type="text/plain")
     response["Content-Disposition"] = f'attachment; filename="{file.name}"'
-    response.write(file.file.read())
+    response.write(file.data)
     return response
 
 
@@ -96,7 +92,7 @@ def decrypt_file(request, file_id):
     file = file.first()
     response = HttpResponse(content_type="text/plain")
     response["Content-Disposition"] = f'attachment; filename="{file.name}"'
-    decrypted_bytes = decrypt(file.file.read(), RSA.import_key(space.private_key))
+    decrypted_bytes = decrypt(file.data, RSA.import_key(space.private_key))
     try:
         decrypted_string = decrypted_bytes.decode("utf-8")
     except:

@@ -18,9 +18,9 @@ class Space(models.Model):
 class File(models.Model):
     space = models.ForeignKey(Space, on_delete=models.CASCADE)
     name = models.TextField()
-    file = models.FileField(upload_to="files/", null=True, blank=True)
+    data = models.BinaryField(null=True, blank=True, editable=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    ended = models.BooleanField(default=False)
+    end = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

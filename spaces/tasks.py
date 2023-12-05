@@ -14,9 +14,8 @@ def sync_encrypt_and_save(user_id, clean_file, file_id):
 
     file_instance = File.objects.get(id=file_id)
     encrypted_data = encrypt(clean_file, public_key)
-    file_data = ContentFile(encrypted_data, name=file_instance.name)
-    file_instance.file = file_data
-    file_instance.ended = True
+    file_instance.data = encrypted_data
+    file_instance.end = True
     file_instance.save()
     return True
 

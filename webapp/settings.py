@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -58,7 +59,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 ROOT_URLCONF = "webapp.urls"
 
 TEMPLATES = [
@@ -134,15 +134,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_URL = "/static/"
 
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 
 # Add additional locations of static files
 STATICFILES_DIRS = [
-    BASE_DIR / "lstatic",
-    BASE_DIR / "lstatic/js",
-    BASE_DIR / "lstatic/css",
-    BASE_DIR / "lstatic/images",
-    # Add other directories as needed
+    BASE_DIR / "static",
 ]
 # 30mb - 31457280
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1024000000  # 1 GB in bytes
