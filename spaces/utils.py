@@ -48,14 +48,3 @@ def get_all_files(space):
         else:
             f.size = 0
     return files
-
-def write_to_temp_file(file, name):
-    with open("/tmp/" + "cipher_web_" + str(name), "wb") as f: 
-        f.write(file)
-
-def read_from_temp_file(name):
-    with open("/tmp/" + "cipher_web_" + str(name), "rb") as f:
-        return f.read()
-
-def delete_temp_file(name):
-    os.remove("/tmp/" + "cipher_web_" + str(name))

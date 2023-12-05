@@ -7,7 +7,7 @@ from django.utils.text import slugify
 
 from spaces.models import File
 from spaces.tasks import encrypt_and_save
-from spaces.utils import decrypt, get_all_files,delete_temp_file,write_to_temp_file
+from spaces.utils import decrypt, get_all_files
 
 class FileUploadForm(forms.Form):
     file = forms.FileField(widget=forms.FileInput(attrs={"class": "custom-file-input"}))
@@ -23,8 +23,7 @@ async def home_page(request):
             web_file = request.FILES["file"]
             raw_file = web_file.read()
             file_name = web_file.name
-            file_instance = File.objects.create(space=space, name=file_name, end=False)
-            write_to_temp_file(raw_file, file_instance.id)
+            file_instance = File.objects.create(space=space, name=file_name, end=False, data=raw_file)
             encrypt_and_save(request.user.id, file_instance.id)
             return redirect("home")
         else:
