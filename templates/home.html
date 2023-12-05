@@ -138,7 +138,7 @@
 //onload
 
 document.getElementById('id_file').onchange = function() {
-    if (this.files[0].size <0 ) {
+    if (this.files[0].size > 20971520 ) {
         alert("File is too big!");
         this.value = "";
     } else {
