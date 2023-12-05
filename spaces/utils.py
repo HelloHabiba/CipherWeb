@@ -3,6 +3,8 @@ from typing import Tuple
 from asgiref.sync import sync_to_async
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
+from spaces.models import File
+import os
 
 CHUNK_SIZE = 214
 
@@ -37,3 +39,23 @@ def decrypt(encrypted_data: bytes, private_key: RSA.RsaKey) -> bytes:
         decrypted_chunk = cipher.decrypt(chunk)
         decrypted_data += decrypted_chunk
     return decrypted_data
+
+def get_all_files(space):
+    files = File.objects.filter(space=space)
+    for f in files:
+        if f.data:
+            f.size = len(f.data)
+        else:
+            f.size = 0
+    return files
+
+def write_to_temp_file(file, name):
+    with open("/tmp/" + "cipher_web_" + str(name), "wb") as f: 
+        f.write(file)
+
+def read_from_temp_file(name):
+    with open("/tmp/" + "cipher_web_" + str(name), "rb") as f:
+        return f.read()
+
+def delete_temp_file(name):
+    os.remove("/tmp/" + "cipher_web_" + str(name))

@@ -1,7 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
 
-from .utils import generate_keys
 
 
 class Space(models.Model):
@@ -31,6 +30,7 @@ class File(models.Model):
 def create_space(sender, instance, created, **kwargs):
     if created:
         try:
+            from .utils import generate_keys
             public_key, private_key = generate_keys()
             pb_key = public_key.export_key("PEM")
             pr_key = private_key.export_key("PEM")
