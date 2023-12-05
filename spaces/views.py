@@ -17,7 +17,7 @@ class FileUploadForm(forms.Form):
 def file_list(request):
     json_response = []
     for file in File.objects.filter(space=request.user.space.first()): 
-        json_response.append({'name': file.name, 'updated_at': file.created_at, 'size': len(file.data), 'end': file.end})
+        json_response.append({'id':file.id,'name': file.name, 'updated_at': file.created_at, 'size': len(file.data), 'end': file.end})
     return JsonResponse(json_response, safe=False)
 
 def home_page(request):
