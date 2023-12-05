@@ -18,7 +18,7 @@ class Space(models.Model):
 class File(models.Model):
     space = models.ForeignKey(Space, on_delete=models.CASCADE)
     name = models.TextField()
-    file = models.FileField(upload_to="files/")
+    file = models.FileField(upload_to="files/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     ended = models.BooleanField(default=False)
 

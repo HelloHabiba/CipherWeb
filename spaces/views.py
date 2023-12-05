@@ -13,17 +13,20 @@ from spaces.utils import decrypt
 class FileUploadForm(forms.Form):
     file = forms.FileField(widget=forms.FileInput(attrs={"class": "custom-file-input"}))
 
+def get_all_files(space):
+    files = File.objects.filter(space=space)
+    for f in files:
+        if f.file:
+            f.size = f.file.size
+        else:
+            f.size = 0
+    return files
 
 async def home_page(request):
     is_authenticated = request.user.is_authenticated
     if is_authenticated:
         space = request.user.space.first()
-        files = File.objects.filter(space=space)
-        for f in files:
-            if not f.ended:
-                f.size = 0
-            else:
-                f.size = f.file.size
+
         if request.method == "POST":
             form = FileUploadForm(request.POST, request.FILES)
             web_file = request.FILES["file"]
@@ -38,9 +41,9 @@ async def home_page(request):
             return redirect("home")
         else:
             form = FileUploadForm()
-
+        
         return render(
-            request, "home.html", {"user": request.user, "form": form, "files": files}
+            request, "home.html", {"user": request.user, "form": form, "files": get_all_files(space)}
         )
     else:
         return render(request, "home.html", {"user": request.user})
