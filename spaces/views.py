@@ -16,9 +16,9 @@ class FileUploadForm(forms.Form):
 def get_all_files(space):
     files = File.objects.filter(space=space)
     for f in files:
-        if f.file:
+        try:
             f.size = f.file.size
-        else:
+        except:
             f.size = 0
     return files
 
