@@ -1,9 +1,10 @@
 from Crypto.PublicKey import RSA
 from django import forms
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.utils.text import slugify
+from django.views.decorators.csrf import csrf_exempt
 
 from spaces.models import File
 from spaces.tasks import encrypt_and_save
@@ -13,28 +14,41 @@ class FileUploadForm(forms.Form):
     file = forms.FileField(widget=forms.FileInput(attrs={"class": "custom-file-input"}))
 
 
-async def home_page(request):
+def file_list(request):
+    json_response = []
+    for file in File.objects.filter(space=request.user.space.first()): 
+        json_response.append({'name': file.name, 'updated_at': file.created_at, 'size': len(file.data), 'end': file.end})
+    return JsonResponse(json_response, safe=False)
+
+def home_page(request):
     is_authenticated = request.user.is_authenticated
     if is_authenticated:
         space = request.user.space.first()
+        form = FileUploadForm()
 
-        if request.method == "POST":
-            form = FileUploadForm(request.POST, request.FILES)
+        return render(
+            request, "home.html"
+        )
+    else:
+        return render(request, "home.html", {"user": request.user})
+    
+
+@csrf_exempt
+def handle_file_upload(request):
+    if request.method == 'POST':
+        form = FileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            space = request.user.space.first()
             web_file = request.FILES["file"]
             raw_file = web_file.read()
             file_name = web_file.name
             file_instance = File.objects.create(space=space, name=file_name, end=False, data=raw_file)
             encrypt_and_save(request.user.id, file_instance.id)
-            return redirect("home")
+            return JsonResponse(data={'name': file_name, 'updated_at': file_instance.created_at, 'size': len(raw_file) }, status=200)
         else:
-            form = FileUploadForm()
-        
-        return render(
-            request, "home.html", {"user": request.user, "form": form, "files": get_all_files(space)}
-        )
+            return JsonResponse({'error': 'Invalid form submission.'}, status=400)
     else:
-        return render(request, "home.html", {"user": request.user})
-
+        return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 @login_required
 def my_files_page(request):
