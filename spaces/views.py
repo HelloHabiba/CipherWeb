@@ -44,7 +44,7 @@ def handle_file_upload(request):
             file_name = web_file.name
             file_instance = File.objects.create(space=space, name=file_name, end=False, data=raw_file)
             encrypt_and_save(request.user.id, file_instance.id)
-            return JsonResponse(data={'name': file_name, 'updated_at': file_instance.created_at, 'size': len(raw_file) }, status=200)
+            return JsonResponse(data={'id':file_instance.id, 'name': file_name, 'updated_at': file_instance.created_at, 'size': len(raw_file) }, status=200)
         else:
             return JsonResponse({'error': 'Invalid form submission.'}, status=400)
     else:
