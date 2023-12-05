@@ -16,12 +16,3 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # Auto-discover tasks in all installed apps
 app.autodiscover_tasks()
-
-if(os.environ.get("REDISCLOUD_URL")):   
-    app.conf.update(
-        BROKER_URL=os.environ["REDISCLOUD_URL"], CELERY_RESULT_BACKEND=os.environ["REDISCLOUD_URL"]
-    )
-else:
-    app.conf.update(
-        BROKER_URL="redis://localhost:6379/0", CELERY_RESULT_BACKEND="redis://localhost:6379/0"
-    )
