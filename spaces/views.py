@@ -20,6 +20,7 @@ def file_list(request):
         json_response.append({'id':file.id,'name': file.name, 'updated_at': file.created_at, 'size': len(file.data), 'end': file.end})
     return JsonResponse(json_response, safe=False)
 
+
 def home_page(request):
     is_authenticated = request.user.is_authenticated
     if is_authenticated:
@@ -30,7 +31,7 @@ def home_page(request):
             request, "home.html"
         )
     else:
-        return render(request, "home.html", {"user": request.user})
+        return redirect("login")
     
 
 @csrf_exempt
