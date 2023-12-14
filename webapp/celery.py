@@ -9,7 +9,14 @@ from celery import Celery
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webapp.settings")
 
 # create a Celery instance and configure it using the settings from Django.
-app = Celery("webapp")
+app = Celery("webapp",
+     broker_use_ssl = {
+        'ssl_cert_reqs': ssl.CERT_NONE
+     },
+     redis_backend_use_ssl = {
+        'ssl_cert_reqs': ssl.CERT_NONE
+     }
+)
 
 # Load task modules from all registered Django app configs.
 app.config_from_object("django.conf:settings", namespace="CELERY")
